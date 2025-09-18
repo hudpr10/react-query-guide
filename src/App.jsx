@@ -1,24 +1,18 @@
+import { useState } from "react";
 import "./App.css";
-
-import { useQuery } from "@tanstack/react-query";
-
-const fetchPosts = async () => {
-  const response = await fetch("https://jsonplaceholder.typicode.com/posts");
-
-  if (!response.ok) throw new Error("Error fetching data.");
-
-  return response.json();
-};
+import Posts from "./components/Posts";
+import PostById from "./components/PostById";
+import CreatePost from "./components/CreatePost/index.jsx";
 
 function App() {
-  // Não substitui o AXIOS ou a FETCH_API, ele cuida do pós
-  // Pós = Loading state, error state, sincroniza os dados, caching
-  const { data } = useQuery({ queryKey: ["posts"], queryFn: fetchPosts });
+  const [isMounted, setIsMounted] = useState(false);
+
   return (
     <>
-      {data?.map((post, index) => (
-        <p key={index}>{post.title}</p>
-      ))}
+      <button onClick={() => setIsMounted((prev) => !prev)}>Toggle</button>
+      {isMounted && <Posts />}
+      {/* <PostById id={100} /> */}
+      <CreatePost />
     </>
   );
 }
